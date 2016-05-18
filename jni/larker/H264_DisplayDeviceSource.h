@@ -1,0 +1,41 @@
+/* ---------------------------------------------------------------------------
+** This software is in the public domain, furnished "as is", without technical
+** support, and with no warranty, express or implied, as to its usefulness for
+** any purpose.
+**
+** H264_DisplayDeviceSource.h
+** 
+** H264 V4L2 live555 source 
+**
+** -------------------------------------------------------------------------*/
+
+
+#ifndef H264_V4L2_DEVICE_SOURCE
+#define H264_V4L2_DEVICE_SOURCE
+
+// project
+#include "DisplayDeviceSource.h"
+
+
+const char H264marker[] = {0,0,0,1};
+class H264_DisplayDeviceSource : public DisplayDeviceSource
+{
+	public:				
+		static H264_DisplayDeviceSource* createNew(UsageEnvironment& env, unsigned int queueSize, bool useThread, bool repeatConfig) ;
+
+	protected:
+		H264_DisplayDeviceSource(UsageEnvironment& env, unsigned int queueSize, bool useThread, bool repeatConfig);
+		virtual ~H264_DisplayDeviceSource();
+
+		unsigned char* extractFrame(unsigned char* frame, size_t& size, size_t& outsize);
+	
+		// overide V4L2DeviceSource
+		virtual std::list< std::pair<unsigned char*,size_t> > splitFrames(unsigned char* frame, unsigned frameSize);
+			
+	private:
+		std::string m_sps;
+		std::string m_pps;
+		bool        m_repeatConfig;
+};
+
+#endif

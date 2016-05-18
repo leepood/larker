@@ -1,5 +1,5 @@
 # larker
 ---
 
-Streaming android screen via rtsp protocal
+Streaming android screen via rtsp protocol
 
